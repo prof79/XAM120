@@ -1,7 +1,6 @@
 ﻿// PhonewordTranslator.cs
 
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Phoneword
@@ -12,21 +11,60 @@ namespace Phoneword
 
         public static string ToNumber(this string raw)
         {
-            throw new NotImplementedException();
+            if (String.IsNullOrWhiteSpace(raw))
+            {
+                return null;
+            }
+
+            raw = raw.ToUpperInvariant();
+
+            var newNumber = new StringBuilder();
+
+            foreach (var ch in raw)
+            {
+                if (" -0123456789".Contains(ch))
+                {
+                    newNumber.Append(ch);
+                }
+                else
+                {
+                    var result = TranslateToNumber(ch);
+
+                    if (result != null)
+                    {
+                        newNumber.Append(result);
+                    }
+                    else
+                    {
+                        // Bad character?
+                        return null;
+                    }
+                }
+            }
+
+            return newNumber.ToString();
         }
 
         #endregion
 
         #region Private Helper Methods
 
-        private static bool Contains(this string keyString, char c)
-        {
-            throw new NotImplementedException();
-        }
+        private static bool Contains(this string keyString, char ch)
+            => keyString.IndexOf(ch) >= 0;
 
-        private static int? TranslateToNumber(this char c)
+        private static int? TranslateToNumber(this char ch)
         {
-            throw new NotImplementedException();
+            for (var keyPadCharSetIndex = 0; keyPadCharSetIndex < keyPadCharSets.Length; ++keyPadCharSetIndex)
+            {
+                // Character argument has already been capitalized.
+                if (keyPadCharSets[keyPadCharSetIndex].Contains(ch))
+                {
+                    // Characters start at key "2", see: https://en.wikipedia.org/wiki/Telephone_keypad
+                    return keyPadCharSetIndex + 2;
+                }
+            }
+
+            return null;
         }
 
         #endregion
@@ -34,10 +72,10 @@ namespace Phoneword
         #region Fields
 
         /// <summary>
-        /// Gets an array of letter groups usually being used on
-        /// common phone devices.
+        /// Gets an array of letter groups assigned to number keys
+        /// usually being used on common phone device keypads.
         /// </summary>
-        private static readonly string[] digits =
+        private static readonly string[] keyPadCharSets =
         {
             "ABC",
             "DEF",
