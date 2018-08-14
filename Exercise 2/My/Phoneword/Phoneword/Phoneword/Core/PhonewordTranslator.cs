@@ -3,7 +3,7 @@
 using System;
 using System.Text;
 
-namespace Phoneword
+namespace Phoneword.Core
 {
     public static class PhonewordTranslator
     {
