@@ -79,6 +79,18 @@ namespace Phoneword
                     _callButton.IsEnabled = false;
                 }
             };
+
+            _callButton.Clicked += async (sender, e) =>
+            {
+                var dialNumber = await
+                    DisplayAlert(
+                        "Dial a number",
+                        $"Would you like to call {_translatedNumber}?",
+                        "Yes",
+                        "No");
+
+                //dialNumber ? x : y;
+            };
         }
 
         #endregion
