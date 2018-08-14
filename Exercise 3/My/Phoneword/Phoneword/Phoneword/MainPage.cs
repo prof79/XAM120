@@ -89,7 +89,14 @@ namespace Phoneword
                         "Yes",
                         "No");
 
-                //dialNumber ? x : y;
+                if (dialNumber)
+                {
+                    await
+                        DependencyService
+                            .Get<IDialer>()
+                            .DialAsync(_translatedNumber)
+                            .ConfigureAwait(false);
+                }
             };
         }
 
