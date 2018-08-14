@@ -8,6 +8,12 @@ namespace Phoneword.Core
     {
         #region Methods
 
+        /// <summary>
+        /// Dial the phone.
+        /// </summary>
+        /// <param name="number">
+        /// The phone number to dial.
+        /// </param>
         Task<bool> DialAsync(string number);
 
         #endregion
